@@ -1,0 +1,2 @@
+CALL_DELIMITER = "#"
+CALL_MULTYLINE = "|"
