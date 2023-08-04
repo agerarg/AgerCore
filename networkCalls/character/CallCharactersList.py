@@ -26,12 +26,12 @@ class CallCharactersList(ComType):
 
         connector.connect()
 
-        query = "SELECT id,name,level,idClass FROM characters WHERE idUser  ='"+format(player.accountId)+"'"
+        query = "SELECT id,name,level,class_id FROM characters WHERE account_id  ='"+format(player.accountId)+"'"
         results = connector.execute_query(query)
         response=""
         if results:
             for row in results:
-                character = '{"id": "'+format(row[0])+'", "name": "'+format(row[1])+'", "level":  "'+format(row[2])+'", "idClass": "'+format(row[3])+'"}'
+                character = '{"id": "'+format(row[0])+'", "name": "'+format(row[1])+'", "level":  "'+format(row[2])+'", "class_id": "'+format(row[3])+'"}'
                 response += "MSG"+CALL_DELIMITER+"CHARACTER"+CALL_DELIMITER+"LIST"+CALL_DELIMITER+""+character+CALL_MULTYLINE
                 
             response += "MSG#CHARACTER"+CALL_DELIMITER+"SELECTED"+CALL_DELIMITER+format(player.selectedCharacterId)+CALL_MULTYLINE

@@ -30,12 +30,12 @@ class CallCharacterEnter(ComType):
 
         characterId = int(received_data['characterId'])
 
-        query = "SELECT id,name,level,exp,expLimit, idClass, mapLocation, mapPositionX, mapPositionY FROM characters WHERE idUser  ='"+format(player.accountId)+"' AND id="+format(characterId)+" LIMIT 0,1"
+        query = "SELECT id,name,level,exp,expLimit, class_id, mapLocation, mapPositionX, mapPositionY FROM characters WHERE account_id  ='"+format(player.accountId)+"' AND id="+format(characterId)+" LIMIT 0,1"
         results = connector.execute_query(query)
         response=""
         if results:
             for row in results:
-                character = '{"id": "'+format(row[0])+'", "name": "'+format(row[1])+'", "level":  "'+format(row[2])+'","exp":  "'+format(row[3])+'","expLimit":  "'+format(row[4])+'", "idClass": "'+format(row[5])+'", "mapLocation": "'+format(row[6])+'", "mapPositionX": "'+format(row[7])+'", "mapPositionY": "'+format(row[8])+'"}'
+                character = '{"id": "'+format(row[0])+'", "name": "'+format(row[1])+'", "level":  "'+format(row[2])+'","exp":  "'+format(row[3])+'","expLimit":  "'+format(row[4])+'", "class_id": "'+format(row[5])+'", "mapLocation": "'+format(row[6])+'", "mapPositionX": "'+format(row[7])+'", "mapPositionY": "'+format(row[8])+'"}'
                 response += "MSG"+CALL_DELIMITER+"CHARACTER"+CALL_DELIMITER+"ENTER"+CALL_DELIMITER+""+character+CALL_MULTYLINE
                 #check if you have already a character loged
                 for client in connected_clients:

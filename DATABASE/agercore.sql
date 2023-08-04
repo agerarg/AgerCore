@@ -48,77 +48,84 @@ INSERT INTO `area` (`id`, `name`, `level`, `areaType`) VALUES
 -- Estructura de tabla para la tabla `characters`
 --
 
-CREATE TABLE `characters` (
-  `id` int(11) NOT NULL,
-  `idClass` int(11) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `idUser` int(11) NOT NULL,
-  `level` int(1) NOT NULL,
-  `exp` bigint(20) NOT NULL,
-  `expLimit` bigint(20) NOT NULL,
-  `mapLocation` int(12) NOT NULL DEFAULT 5,
-  `mapPositionX` float NOT NULL,
-  `mapPositionY` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE IF NOT EXISTS `characters` (
+	`char_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`account_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`char_num` TINYINT(1) NOT NULL DEFAULT '0',
+	`name` VARCHAR(50) NOT NULL COLLATE 'utf8_general_ci',
+	`class_id` INT(11) NOT NULL,
+	`level` SMALLINT(6) UNSIGNED NOT NULL DEFAULT '1',
+	`exp` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
+	`expLimit` BIGINT(20) NOT NULL,
+	`last_map` INT(12) NOT NULL DEFAULT '5',
+	`last_x` FLOAT NOT NULL,
+	`last_y` FLOAT NOT NULL,
+	`online` TINYINT(2) NOT NULL DEFAULT '0',
+	`sex` ENUM('M','F') NOT NULL COLLATE 'utf8_general_ci',
+	PRIMARY KEY (`char_id`) USING BTREE,
+	UNIQUE INDEX `name` (`name`) USING BTREE,
+	INDEX `account_id` (`account_id`) USING BTREE
+)
+ENGINE=InnoDB AUTO_INCREMENT=150000;
 --
 -- Volcado de datos para la tabla `characters`
 --
 
-INSERT INTO `characters` (`id`, `idClass`, `name`, `idUser`, `level`, `exp`, `expLimit`, `mapLocation`, `mapPositionX`, `mapPositionY`) VALUES
-(1, 3, 'Warrior', 4, 5, 0, 5, 1, 0, 0),
-(2, 1, 'Baba', 1, 7, 1, 5, 1, 0, 0),
-(4, 2, 'test character', 1, 3, 0, 5, 1, 0, 0),
-(5, 3, 'Pepito', 5, 1, 0, 5, 1, 0, 0);
+INSERT INTO `characters` (`account_id`, `char_id`, `char_num`, `name`, `class_id`, `level`, `exp`, `expLimit`, `last_map`, `last_x`, `last_y`, `online`, `sex`) VALUES
+(2000000, 150000, 0, 'Warrior', 3, 5, 0, 5, 1, 0, 0, 0, 'M'),
+(2000000, 150001, 0, 'Baba', 1, 7, 1, 5, 1, 0, 0, 0, 'M'),
+(2000001, 150002, 0, 'test character', 2, 3, 0, 5, 1, 0, 0, 0, 'M'),
+(2000002, 150003, 0, 'Pepito', 3, 1, 0, 5, 1, 0, 0, 0, 'M');
+
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `charclass`
+-- Estructura de tabla para la tabla `class_db`
 --
 
-CREATE TABLE `charclass` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `class_db` (
+  `class_id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `intelligence` int(11) NOT NULL,
   `dexterity` int(11) NOT NULL,
   `strength` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT  AUTO_INCREMENT=0;
 
 --
--- Volcado de datos para la tabla `charclass`
+-- Volcado de datos para la tabla `class_db`
 --
 
-INSERT INTO `charclass` (`id`, `name`, `intelligence`, `dexterity`, `strength`) VALUES
-(1, 'warrior', 5, 10, 15),
-(2, 'rogue', 10, 15, 5),
-(3, 'mage', 15, 5, 10);
+INSERT INTO `class_db` (`id`, `name`, `intelligence`, `dexterity`, `strength`) VALUES
+(0, 'warrior', 5, 10, 15),
+(1, 'rogue', 10, 15, 5),
+(2, 'mage', 15, 5, 10);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `users`
+-- Estructura de tabla para la tabla `login`
 --
 
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `username` varchar(100) NOT NULL,
-  `password` varchar(200) NOT NULL,
-  `email` varchar(200) NOT NULL,
-  `selectedCharacterId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE IF NOT EXISTS `login` (
+  `account_id` int(11) unsigned NOT NULL auto_increment,
+  `username` varchar(23) NOT NULL default '',
+  `userpass` varchar(32) NOT NULL default '',
+  `email` varchar(39) NOT NULL default '',
+  `character_slots` tinyint(3) unsigned NOT NULL default '0',
+) ENGINE=InnoDB AUTO_INCREMENT=2000000; 
 
 --
--- Volcado de datos para la tabla `users`
+-- Volcado de datos para la tabla `login`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `email`, `selectedCharacterId`) VALUES
-(1, 'test', '123456', '', 0),
-(4, 'test2', '123456', 'test@mail.com', 0),
-(5, 'test3', '123456', '', 0);
+INSERT INTO `login` (`account_id`, `username`, `userpass`, `email`, `character_slots`) VALUES
+(2000000, 'test', '123456', '', 0),
+(2000001, 'test2', '123456', 'test@mail.com', 0),
+(2000002, 'test3', '123456', '', 0);
 
 --
--- Índices para tablas volcadas
+-- Ýndices para tablas volcadas
 --
 
 --
@@ -132,18 +139,18 @@ ALTER TABLE `area`
 --
 ALTER TABLE `characters`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `idUser` (`idUser`);
+  ADD KEY `account_id` (`account_id`);
 
 --
--- Indices de la tabla `charclass`
+-- Indices de la tabla `class_db`
 --
-ALTER TABLE `charclass`
+ALTER TABLE `class_db`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `users`
+-- Indices de la tabla `login`
 --
-ALTER TABLE `users`
+ALTER TABLE `login`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -160,19 +167,19 @@ ALTER TABLE `area`
 -- AUTO_INCREMENT de la tabla `characters`
 --
 ALTER TABLE `characters`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `char_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT de la tabla `charclass`
+-- AUTO_INCREMENT de la tabla `class_db`
 --
-ALTER TABLE `charclass`
+ALTER TABLE `class_db`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT de la tabla `users`
+-- AUTO_INCREMENT de la tabla `login`
 --
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+ALTER TABLE `login`
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

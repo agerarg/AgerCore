@@ -26,11 +26,11 @@ def check_character_exists(conn, account_name):
             print("Error check_account_exists:", err)
             return False
 
-def create_character(conn, name, idClass, idUser):
+def create_character(conn, name, class_id, account_id):
         try:
             cursor = conn.cursor()
-            query = "INSERT INTO characters (name,idClass,idUser) VALUES(%s,%s,%s)"
-            values = (name, idClass, idUser)
+            query = "INSERT INTO characters (name,class_id,account_id) VALUES(%s,%s,%s)"
+            values = (name, class_id, account_id)
             cursor.execute(query, values)
             conn.commit()
             cursor.close()
@@ -51,13 +51,13 @@ class CallCharacterCreate(ComType):
         received_data = json.loads(jsonData)
 
         dataName =   remove_special_characters(received_data['name'])
-        idClass = int(received_data['idClass'])
+        class_id = int(received_data['class_id'])
         connector = MySQLConnector()
 
         connector.connect()
 
         if not check_character_exists(connector.conn, dataName):
-            create_character(connector.conn,dataName,idClass, player.accountId)
+            create_character(connector.conn,dataName,class_id, player.accountId)
             response = "MSG"+CALL_DELIMITER+"CREATECHARACTEROK"+CALL_DELIMITER+"OK"
             player.client_socket.sendall(response.encode())
         else:
