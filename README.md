@@ -1,2 +1,0 @@
-# AgerCore
-MMORPG Backend
