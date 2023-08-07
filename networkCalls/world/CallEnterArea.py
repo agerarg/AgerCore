@@ -10,7 +10,7 @@ from Init import *
 from MySQLConnector import *
 from core.Player import *
 from Util import *
-from GlobalData import connected_clients
+from GlobalData import connected_clients,world_mobs
 from interfaces.ComType import ComType
 
 def get_area_data(conn,areaId):
@@ -40,6 +40,12 @@ def hey_im_here_to_players(player,areaId):
                 response = "WORLD"+CALL_DELIMITER+"PLAYER"+CALL_DELIMITER+""+newPlayerMsg+CALL_MULTYLINE
                 connected_clients[socketId].client_socket.sendall(response.encode())
 
+def get_all_mobs(player,areaId):
+         for mobId in world_mobs[areaId]:
+            mob = world_mobs[areaId][mobId]
+            msg = '{"uniqueId": "'+format(mob.mobInternalId)+'","id": "'+format(mob.mobId)+'", "x": "'+format(mob.X)+'", "y":  "'+format(mob.Y)+'","life": "'+format(mob.life)+'","lifeLimit": "'+format(mob.lifeLimit)+'"}'
+            response = "MOB"+CALL_DELIMITER+"NEW"+CALL_DELIMITER+msg
+            send_message(player.client_socket,response)
 
 class CallEnterArea(ComType):
     def data(jsonData,player):
@@ -53,15 +59,15 @@ class CallEnterArea(ComType):
         areaId = int(received_data['area'])
 
         player.mapId = areaId
+        player.MovePlayerToArea(player.mapId)
 
         connector = MySQLConnector()
         connector.connect()
 
         response = get_area_data(connector,areaId)
-
-       
-
         if(areaId>0):
+            #Load all mobs in this location
+             get_all_mobs(player,areaId)
             #Load all players in this location
              response += get_all_players(areaId)
             #Tell all players in this area that you join in

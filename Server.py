@@ -1,9 +1,10 @@
 import asyncio
 import socket
 from core.Player import *
+from mobs.spown import StartSpowning
 from ServerCallDic import callList
 from GlobalData import connected_clients
-
+from Util import *
 async def handle_client(reader, writer):
     client_address = writer.get_extra_info('peername')
     print("Client connected:", client_address)
@@ -34,9 +35,14 @@ async def handle_client(reader, writer):
         # Clean up the connection
         writer.close()
         await writer.wait_closed()
+
+
         # Remove the client from the dictionary when the connection is closed
         if client_socket in connected_clients:
+            connected_clients[client_socket].OnDelete()
             del connected_clients[client_socket]
+
+        
 
 async def start_server():
     server_address = ('localhost', 12345)
@@ -49,5 +55,9 @@ async def start_server():
         await server.serve_forever()
 
 if __name__ == "__main__":
+    #Adding functions to activate every 10 seconds
+    triggerEvery10Sec.append(StartSpowning)
+    triggerEvery10Seconds()
     loop = asyncio.get_event_loop()
     loop.run_until_complete(start_server())
+    

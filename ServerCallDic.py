@@ -18,6 +18,10 @@ from networkCalls.character.CallCharacterEnter import CallCharacterEnter
 from networkCalls.world.CallMovement import CallMovement
 from networkCalls.world.CallEnterArea  import CallEnterArea
 from networkCalls.world.CallDisconnected import CallDisconnected
+
+from networkCalls.Skill.CallSkill import CallSkill
+
+from networkCalls.mob.CallMobDamage import CallMobDamage
 callList={}
 
 callList['CallMsg'] = CallMsg
@@ -31,8 +35,11 @@ callList['CallCharacterEnter']=CallCharacterEnter
 
 callList['CallMovement']=CallMovement
 callList['CallEnterArea']=CallEnterArea
-
 callList['CallDisconnected']=CallDisconnected
+
+callList['CallSkill']=CallSkill
+
+callList['CallMobDamage']=CallMobDamage
 
 
 

@@ -1,5 +1,16 @@
+import sys
+import os
+current_path = os.path.dirname(os.path.abspath(__file__))
+carpeta_paralela_path = os.path.join(current_path, '../')
+sys.path.append(carpeta_paralela_path)
+
+from GlobalData import world_clients
+PLAYER_ID = 0
 class Player:
   def __init__(self, socket, address):
+    global PLAYER_ID
+    PLAYER_ID+=1
+    self.internalPlayerId = PLAYER_ID
     self.isLogged = False
     self.accountId = 0
     self.isCharacterSelected=False
@@ -31,6 +42,11 @@ class Player:
      self.mapPositionX = X
      self.mapPositionY = Y
 
+  def MovePlayerToArea(self,mapId):
+     self.RemovePlayerFromAreas()
+     #add player to area for easy search
+     world_clients[mapId][self]=self
+
   def CharacterEnter(self,characterId,name,level,exp,expLimit,idClass):
     self.characterId = characterId
     self.name = name
@@ -41,5 +57,15 @@ class Player:
     self.isCharacterEntered=True
     #print( f"{self.characterId} {self.name} {self.level} {self.exp} {self.expLimit} {self.idClass}"  )
 
+  def RemovePlayerFromAreas(self):
+    #remove player from all posible areas
+    for area in world_clients:
+       try:
+            if self in area:
+             del area[self]
+       finally:
+        pass
     
-
+  def OnDelete(self):
+    self.RemovePlayerFromAreas()
+      

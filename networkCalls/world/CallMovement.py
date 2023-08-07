@@ -10,7 +10,7 @@ from Init import *
 from MySQLConnector import *
 from core.Player import *
 from Util import *
-from GlobalData import connected_clients
+from GlobalData import world_clients
 from interfaces.ComType import ComType
 
 class CallMovement(ComType):
@@ -26,9 +26,7 @@ class CallMovement(ComType):
         player.mapPositionX = float(received_data['X'])
         player.mapPositionY = float(received_data['Y'])
 
-        for client in connected_clients:
-            c = connected_clients[client]
-            if(c.mapId == player.mapId):
+        for playerInArea in world_clients[player.mapId]:
                msg = '{"id": "'+format(player.characterId)+'", "x": "'+format(player.mapPositionX)+'", "y":  "'+format(player.mapPositionY)+'"}'
                response = "WORLD"+CALL_DELIMITER+"MOVE"+CALL_DELIMITER+msg
-               send_message(c.client_socket,response)
+               send_message(playerInArea.client_socket,response)

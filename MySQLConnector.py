@@ -1,11 +1,11 @@
 import mysql.connector
-    
+from Init import *
 class MySQLConnector:
     def __init__(self):
-        self.host = "localhost"
-        self.user = "root"
-        self.password = ""
-        self.database = "agercore"
+        self.host = DB_HOST
+        self.user = DB_USER
+        self.password = DB_PASSWORD
+        self.database = DB_DATABASE
         self.conn = None
 
     def connect(self):

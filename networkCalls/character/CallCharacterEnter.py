@@ -46,7 +46,6 @@ class CallCharacterEnter(ComType):
 
                 player.CharacterEnter(row[0],row[1],row[2],row[3],row[4],row[5])
                 player.SetMapLocation(row[6],row[7],row[8])
-                
             player.client_socket.sendall(response.encode())
             connector.close()
             return
