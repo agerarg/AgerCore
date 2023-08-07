@@ -39,7 +39,7 @@ async def handle_client(reader, writer):
             del connected_clients[client_socket]
 
 async def start_server():
-    server_address = ('localhost', 12345)
+    server_address = ('localhost', 6900)
 
     server = await asyncio.start_server(
         handle_client, *server_address, reuse_address=True)

@@ -21,9 +21,9 @@ class CallLogin(ComType):
         connector.connect()
         
         user = remove_special_characters(received_data["username"]).lower()
-        password = remove_special_characters(received_data["password"])
+        userpass = remove_special_characters(received_data["userpass"])
 
-        query = "SELECT * FROM users WHERE username ='"+user+"' AND password='"+password+"' LIMIT 0,1"
+        query = "SELECT * FROM login WHERE username ='"+user+"' AND userpass='"+userpass+"' LIMIT 0,1"
         results = connector.execute_query(query)
         if results:
             for row in results:
@@ -35,7 +35,7 @@ class CallLogin(ComType):
                 response = "MSG"+CALL_DELIMITER+"LOGINOK"+CALL_DELIMITER+"OK"
                 player.client_socket.sendall(response.encode())
         else:
-            #print("wroing user or password")
+            #print("wroing user or userpass")
             response = "ERROR"+CALL_DELIMITER+"LOGIN"+CALL_DELIMITER+"ERR"
             player.client_socket.sendall(response.encode())
 

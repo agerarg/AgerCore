@@ -11,7 +11,7 @@ class Player:
     self.level = 0
     self.exp = 0
     self.expLimit = 0
-    self.idClass = 0
+    self.class_id = 0
 
     self.mapId = 0
     self.mapPositionX = 0
@@ -31,15 +31,15 @@ class Player:
      self.mapPositionX = X
      self.mapPositionY = Y
 
-  def CharacterEnter(self,characterId,name,level,exp,expLimit,idClass):
+  def CharacterEnter(self,characterId,name,level,exp,expLimit,class_id):
     self.characterId = characterId
     self.name = name
     self.level = level
     self.exp = exp
     self.expLimit = expLimit
-    self.idClass = idClass
+    self.class_id = class_id
     self.isCharacterEntered=True
-    #print( f"{self.characterId} {self.name} {self.level} {self.exp} {self.expLimit} {self.idClass}"  )
+    #print( f"{self.characterId} {self.name} {self.level} {self.exp} {self.expLimit} {self.class_id}"  )
 
     
 

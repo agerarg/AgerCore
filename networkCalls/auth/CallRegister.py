@@ -15,7 +15,7 @@ from interfaces.ComType import ComType
 def check_account_exists(conn, account_name):
         try:
             cursor = conn.cursor()
-            query = "SELECT COUNT(*) FROM users WHERE username ='"+account_name+"'"
+            query = "SELECT COUNT(*) FROM login WHERE username ='"+account_name+"'"
             cursor.execute(query)
             result = cursor.fetchone()[0]
             cursor.close()
@@ -25,11 +25,11 @@ def check_account_exists(conn, account_name):
             print("Error check_account_exists:", err)
             return False
 
-def create_account(conn, username, password, email):
+def create_account(conn, username, userpass, email):
         try:
             cursor = conn.cursor()
-            query = "INSERT INTO users (username,password,email) VALUES(%s,%s,%s)"
-            values = (username, password, email)
+            query = "INSERT INTO login (username,userpass,email) VALUES(%s,%s,%s)"
+            values = (username, userpass, email)
             cursor.execute(query, values)
             conn.commit()
             cursor.close()
@@ -48,7 +48,7 @@ class CallRegister(ComType):
         connector.connect()
         
         user = remove_special_characters(received_data["username"]).lower()
-        password = remove_special_characters(received_data["password"])
+        userpass = remove_special_characters(received_data["userpass"])
 
         if(is_valid_email(received_data["mail"])):
             mail = received_data["mail"]
@@ -59,7 +59,7 @@ class CallRegister(ComType):
             return
 
         if not check_account_exists(connector.conn, user):
-            create_account(connector.conn,user,password,mail)
+            create_account(connector.conn,user,userpass,mail)
             response = "MSG"+CALL_DELIMITER+"REGISTEROK"+CALL_DELIMITER+"OK"
             player.client_socket.sendall(response.encode())
         else:

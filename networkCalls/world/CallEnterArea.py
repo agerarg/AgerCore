@@ -28,7 +28,7 @@ def get_all_players(areaId):
         response=""
         for socketId in connected_clients:
             if(connected_clients[socketId].mapId == areaId):
-                playerMsg = '{"id": "'+format(connected_clients[socketId].characterId)+'", "name": "'+connected_clients[socketId].name+'", "idClass":  "'+format(connected_clients[socketId].idClass)+'", "positionX":  "'+format(connected_clients[socketId].mapPositionX)+'", "positionY":  "'+format(connected_clients[socketId].mapPositionY)+'"}'
+                playerMsg = '{"id": "'+format(connected_clients[socketId].characterId)+'", "name": "'+connected_clients[socketId].name+'", "class_id":  "'+format(connected_clients[socketId].class_id)+'", "positionX":  "'+format(connected_clients[socketId].mapPositionX)+'", "positionY":  "'+format(connected_clients[socketId].mapPositionY)+'"}'
                 response += "WORLD"+CALL_DELIMITER+"PLAYER"+CALL_DELIMITER+""+playerMsg+CALL_MULTYLINE
         return response
 
@@ -36,7 +36,7 @@ def hey_im_here_to_players(player,areaId):
         response=""
         for socketId in connected_clients:
             if(connected_clients[socketId].mapId == areaId):
-                newPlayerMsg = '{"id": "'+format(player.characterId)+'", "name": "'+player.name+'", "idClass":  "'+format(player.idClass)+'", "positionX":  "'+format(player.mapPositionX)+'", "positionY":  "'+format(player.mapPositionY)+'"}'
+                newPlayerMsg = '{"id": "'+format(player.characterId)+'", "name": "'+player.name+'", "class_id":  "'+format(player.class_id)+'", "positionX":  "'+format(player.mapPositionX)+'", "positionY":  "'+format(player.mapPositionY)+'"}'
                 response = "WORLD"+CALL_DELIMITER+"PLAYER"+CALL_DELIMITER+""+newPlayerMsg+CALL_MULTYLINE
                 connected_clients[socketId].client_socket.sendall(response.encode())
 
