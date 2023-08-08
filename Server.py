@@ -45,7 +45,7 @@ async def handle_client(reader, writer):
         
 
 async def start_server():
-    server_address = ('localhost', 12345)
+    server_address = (SERVER_IP, SERVER_PORT)
 
     server = await asyncio.start_server(
         handle_client, *server_address, reuse_address=True)
